@@ -5,37 +5,6 @@ pragma solidity ^0.8.23;
  * @title   TinyMerkleTree.
  * @author  fps (@0xfps).
  * @dev     A small, simple MerkleTree peripheral contract.
- * @notice  The implementation in this contract was written solely because,
- *          I found it difficult to implement a merkle tree in pure Solidity
- *          and, sources I studied, Github solidity merkle tree repos I went
- *          through didn't have what I wanted.
- *
- *          Merkle trees consume a lot of gas during computation, as whenever
- *          leaves are added to the tree, a new root is generated. This isn't
- *          a big deal for small trees with depths of 2 to 4. However, for
- *          slightly larger or even large trees, it comes at a cost of gas.
- *
- *          My own merkle tree algorithm operates on a simple principle:
- *          Stay on the most recent leaf as possible at all times. On each
- *          tree depth, starting from depth 0, I either calculate the new leaf
- *          which is a hash of the current leaf and already stored leaf on that
- *          depth if the depth is even. If the depth is odd, I simply return the
- *          leaf. This is repeated until we have a depth with just two leaves in
- *          it, which in this case, when hashed, will give us the new root.
- *
- *          A depth is considered complete if the length of hashes on that depth
- *          multiplied by two is equal to the length of the depth below it. Of
- *          course, this doesn't apply to the zero depth.
- *
- *          Leafs on the zero depth are stored no matter what. But for other depths
- *          the calculated leafs (hashes) are stored once the depth is considered
- *          complete.
- *
- *          Careful note should be taken to ignore `levelLengths` and `levelHashes`.
- *          Their data as the tree progresses will become jumbled due to the
- *          computations, nevertheless, the root calculations will be accurate.
- *
- *          I still don't think I'm clear.
  */
 
 abstract contract TinyMerkleTree {
