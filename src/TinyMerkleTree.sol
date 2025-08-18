@@ -24,9 +24,9 @@ abstract contract TinyMerkleTree {
     bytes32 public root;
 
     // Number of hashes stored on each depth.
-    mapping(uint8 depth => uint40 levelLength) public levelLengths;
+    mapping(uint8 depth => uint40 depthLength) public depthLengths;
     // Last stored hash for each depth.
-    mapping(uint8 depth => bytes32 levelHash) public levelHashes;
+    mapping(uint8 depth => bytes32 depthHash) public depthHashes;
 
     /**
      * @notice  I expect that for a start, a leaf should be set to
@@ -37,8 +37,8 @@ abstract contract TinyMerkleTree {
         root = keccak256(abi.encodePacked(leaf));
 
         length = 1;
-        levelLengths[0] = 1;
-        levelHashes[0] = leaf;
+        depthLengths[0] = 1;
+        depthHashes[0] = leaf;
     }
 
     function _addLeaf(string memory _leaf) internal returns (bytes32 _root) {
@@ -46,14 +46,14 @@ abstract contract TinyMerkleTree {
 
         bytes32 leaf = keccak256(abi.encode(_leaf));
 
-        levelLengths[0] = length;
+        depthLengths[0] = length;
 
         uint40 newLength = length;
         uint8 depth = 0;
         bytes32 currentHash = leaf;
 
         while(newLength >= 2) {
-            currentHash = _getHashForLevel(newLength, depth, currentHash);
+            currentHash = _getHashForDepth(newLength, depth, currentHash);
             newLength = (newLength + 1) / 2;
             depth++;
         }
@@ -63,40 +63,40 @@ abstract contract TinyMerkleTree {
         root = _root;
     }
 
-    function _getHashForLevel(uint40 len, uint8 depth, bytes32 leaf) internal returns (bytes32 hash) {
+    function _getHashForDepth(uint40 len, uint8 depth, bytes32 leaf) internal returns (bytes32 hash) {
         bytes32 hashLeft;
         bytes32 hashRight;
 
         // Last two leaves leading to root.
         if (len == 2) {
-            (hashLeft, hashRight) = _sortHashes(levelHashes[depth], leaf);
+            (hashLeft, hashRight) = _sortHashes(depthHashes[depth], leaf);
             hash = keccak256(abi.encodePacked(hashLeft, hashRight));
             
-            levelHashes[depth + 1] = hash; // New Root.
-            levelLengths[depth + 1]++;
+            depthHashes[depth + 1] = hash; // New Root.
+            depthLengths[depth + 1]++;
         } else {
             if (len % 2 == 1)
                 hash = leaf;
             else {
-                (hashLeft, hashRight) = _sortHashes(levelHashes[depth], leaf);
+                (hashLeft, hashRight) = _sortHashes(depthHashes[depth], leaf);
                 hash = keccak256(abi.encodePacked(hashLeft, hashRight));
             }
         }
 
         if (depth == 0)
-            levelHashes[depth] = leaf;
+            depthHashes[depth] = leaf;
         else {
-            uint40 curLevelLength = levelLengths[depth];
-            uint40 prevLevelLength = levelLengths[depth - 1];
+            uint40 curDepthLength = depthLengths[depth];
+            uint40 prevDepthLength = depthLengths[depth - 1];
 
             // When leaf is added.
             // Prev depth handles itself via the iteration.
-            if (((curLevelLength + 1) * 2 == prevLevelLength)) {
-                levelLengths[depth]++;
+            if (((curDepthLength + 1) * 2 == prevDepthLength)) {
+                depthLengths[depth]++;
                 // Append latest leaf if this is last stage to root because leaf yielded root.
                 // If not, append the last hash.
                 // Note must be taken that, for lengths % 2 != 0, the hash is == the leaf (L54).
-                levelHashes[depth] = len == 2 ? leaf : hash;
+                depthHashes[depth] = len == 2 ? leaf : hash;
             }
         }
     }
