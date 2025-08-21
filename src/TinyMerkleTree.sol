@@ -73,7 +73,10 @@ abstract contract TinyMerkleTree {
             hash = keccak256(abi.encodePacked(hashLeft, hashRight));
             
             depthHashes[depth + 1] = hash; // New Root.
-            depthLengths[depth + 1]++;
+            // If a new root is computed, only increment the next depth if it's still 0.
+            // Subsequent root computations to be stored at that depth doesn't need a
+            // new increment.
+            if (depthLengths[depth + 1] == 0) depthLengths[depth + 1]++;
         } else {
             if (len % 2 == 1)
                 hash = leaf;
