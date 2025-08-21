@@ -42,7 +42,8 @@ abstract contract TinyMerkleTree {
     }
 
     function _addLeaf(string memory _leaf) internal returns (bytes32 _root) {
-        if (length++ == MAX_LEAVES_LENGTH) revert("Tree Full!");
+        // Do not exceed 4,294,967,296 leaves.
+        if (length++ == MAX_LEAVES_LENGTH + 1) revert("Tree Full!");
 
         bytes32 leaf = keccak256(abi.encode(_leaf));
 
