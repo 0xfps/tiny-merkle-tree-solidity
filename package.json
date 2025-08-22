@@ -25,6 +25,7 @@
     "typescript": "^5.9.2"
   },
   "dependencies": {
+    "@0xfps/tiny-merkle-tree": "^0.0.0",
     "keccak256": "^1.0.6"
   }
 }
