@@ -1,5 +1,4 @@
-import { AbiCoder } from "ethers";
-import keccak256 from "keccak256";
+import { AbiCoder, keccak256 } from "ethers";
 
 export function getRoot(leafNo: number): string {
     const coder = AbiCoder.defaultAbiCoder()
@@ -10,7 +9,7 @@ export function getRoot(leafNo: number): string {
 
     let leaves = leafs.map(function (leaf) {
         const encode = coder.encode(["string"], [leaf.toString()])
-        return hash(encode)
+        return keccak256(encode)
     })
 
     // Start tree with all the leaves.
@@ -30,7 +29,7 @@ export function getRoot(leafNo: number): string {
         // leaves to yield the root.
         if (length == 2) {
             concatLeaves = concatenateArrangedLeaves(leaves[0], leaves[1]);
-            hashedPairs.push(hash(concatLeaves));
+            hashedPairs.push(keccak256(concatLeaves));
             tree.unshift(hashedPairs);
             break;
         }
@@ -41,7 +40,7 @@ export function getRoot(leafNo: number): string {
         // grouping, it's not touched here.
         for (let i = 0; i < length - 1; i += 2) {
             concatLeaves = concatenateArrangedLeaves(leaves[i], leaves[i + 1])
-            hashedPairs.push(hash(concatLeaves));
+            hashedPairs.push(keccak256(concatLeaves));
         }
 
         // The leaf not touched in the loop as a result of the depth leaves being
@@ -58,10 +57,6 @@ export function getRoot(leafNo: number): string {
 
     const root = tree[0][0]
     return root
-}
-
-function hash(leaf: string): string {
-    return `0x${keccak256(leaf).toString("hex")}`
 }
 
 function concatenateArrangedLeaves(leaf1: string, leaf2: string) {
