@@ -25,6 +25,7 @@
     "typescript": "^5.9.2"
   },
   "dependencies": {
+    "@fifteenfigures/mini-merkle-tree": "^0.0.5",
     "keccak256": "^1.0.6"
   }
 }

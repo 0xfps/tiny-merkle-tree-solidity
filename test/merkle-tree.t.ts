@@ -1,6 +1,6 @@
 import { ethers } from "hardhat";
 import { getRoot } from "./mock-merkle-tree";
-const assert = require("node:assert/strict")
+import assert from "node:assert/strict"
 
 // Quite a stress test, but no issues.
 const LIMITS = [10, 100, 1000, 10000, 100000, 1000000];
