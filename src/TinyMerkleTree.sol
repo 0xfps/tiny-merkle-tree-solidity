@@ -6,7 +6,6 @@ pragma solidity ^0.8.23;
  * @author  fps (@0xfps).
  * @dev     A small, simple MerkleTree peripheral contract.
  */
-
 abstract contract TinyMerkleTree {
     uint40 public immutable MAX_LEAVES_LENGTH = 2 ** 32;
     uint8 public constant STORED_ROOT_LENGTH = 32;
@@ -33,8 +32,8 @@ abstract contract TinyMerkleTree {
      *          make a root available.
      */
     constructor() {
-        bytes32 leaf = keccak256(abi.encode("0"));
-        root = keccak256(abi.encodePacked(leaf));
+        bytes32 leaf = sha256(abi.encode("0"));
+        root = sha256(abi.encodePacked(leaf));
 
         length = 1;
         depthLengths[0] = 1;
@@ -45,7 +44,7 @@ abstract contract TinyMerkleTree {
         // Do not exceed 4,294,967,296 leaves.
         if (length++ == MAX_LEAVES_LENGTH + 1) revert("Tree Full!");
 
-        bytes32 leaf = keccak256(abi.encode(_leaf));
+        bytes32 leaf = sha256(abi.encode(_leaf));
 
         depthLengths[0] = length;
 
@@ -71,7 +70,7 @@ abstract contract TinyMerkleTree {
         // Last two leaves leading to root.
         if (len == 2) {
             (hashLeft, hashRight) = _sortHashes(depthHashes[depth], leaf);
-            hash = keccak256(abi.encodePacked(hashLeft, hashRight));
+            hash = sha256(abi.encodePacked(hashLeft, hashRight));
             
             depthHashes[depth + 1] = hash; // New Root.
             // If a new root is computed, only increment the next depth if it's still 0.
@@ -83,7 +82,7 @@ abstract contract TinyMerkleTree {
                 hash = leaf;
             else {
                 (hashLeft, hashRight) = _sortHashes(depthHashes[depth], leaf);
-                hash = keccak256(abi.encodePacked(hashLeft, hashRight));
+                hash = sha256(abi.encodePacked(hashLeft, hashRight));
             }
         }
 
