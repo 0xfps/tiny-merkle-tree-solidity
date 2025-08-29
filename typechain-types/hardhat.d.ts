@@ -14,6 +14,14 @@ import * as Contracts from ".";
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
+      name: "PoseidonT2",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.PoseidonT2__factory>;
+    getContractFactory(
+      name: "PoseidonT3",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.PoseidonT3__factory>;
+    getContractFactory(
       name: "TinyMerkleTree",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.TinyMerkleTree__factory>;
@@ -23,6 +31,16 @@ declare module "hardhat/types/runtime" {
     ): Promise<Contracts.TMT__factory>;
 
     getContractAt(
+      name: "PoseidonT2",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.PoseidonT2>;
+    getContractAt(
+      name: "PoseidonT3",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.PoseidonT3>;
+    getContractAt(
       name: "TinyMerkleTree",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
@@ -34,6 +52,14 @@ declare module "hardhat/types/runtime" {
     ): Promise<Contracts.TMT>;
 
     deployContract(
+      name: "PoseidonT2",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.PoseidonT2>;
+    deployContract(
+      name: "PoseidonT3",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.PoseidonT3>;
+    deployContract(
       name: "TinyMerkleTree",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.TinyMerkleTree>;
@@ -42,6 +68,16 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.TMT>;
 
+    deployContract(
+      name: "PoseidonT2",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.PoseidonT2>;
+    deployContract(
+      name: "PoseidonT3",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.PoseidonT3>;
     deployContract(
       name: "TinyMerkleTree",
       args: any[],

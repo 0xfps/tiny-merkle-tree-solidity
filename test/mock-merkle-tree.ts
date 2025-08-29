@@ -1,5 +1,6 @@
-import MiniMerkleTree from "@fifteenfigures/mini-merkle-tree";
-import { AbiCoder, sha256 } from "ethers";
+import MiniMerkleTree, { smolPadding } from "@fifteenfigures/mini-merkle-tree";
+import { AbiCoder, keccak256 } from "ethers";
+import { poseidon } from "poseidon-hash";
 
 export function getRoot(leafNo: number): string {
     const coder = AbiCoder.defaultAbiCoder()
@@ -10,7 +11,7 @@ export function getRoot(leafNo: number): string {
 
     let leaves = leafs.map(function (leaf) {
         const encode = coder.encode(["string"], [leaf.toString()])
-        return sha256(encode)
+        return smolPadding(`0x${poseidon([keccak256(encode)]).toString(16)}`)
     })
 
     const tree = new MiniMerkleTree(leaves)

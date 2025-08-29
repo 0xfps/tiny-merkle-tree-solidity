@@ -8,7 +8,21 @@ const LIMITS = [10, 100, 1000, 10000, 100000, 1000000];
 describe("Test root", function () {
     it("Adds a range of leaves", async function () {
         for (const LIMIT of LIMITS) {
-            const TMT = await ethers.getContractFactory("TMT")
+            const p2 = await ethers.getContractFactory("PoseidonT2")
+            const p3 = await ethers.getContractFactory("PoseidonT3")
+
+            const p22 = await p2.deploy()
+            const p33 = await p3.deploy()
+
+            const p2a = await p22.getAddress()
+            const p3a = await p33.getAddress()
+
+            const TMT = await ethers.getContractFactory("TMT", {
+                libraries: {
+                    PoseidonT2: p2a,
+                    PoseidonT3: p3a
+                }
+            })
             const tmt = await TMT.deploy()
 
             console.log("Testing for limit", LIMIT)
