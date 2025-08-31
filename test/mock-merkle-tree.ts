@@ -2,7 +2,7 @@ import MiniMerkleTree, { smolPadding } from "@fifteenfigures/mini-merkle-tree";
 import { AbiCoder, keccak256 } from "ethers";
 import { poseidon } from "poseidon-hash";
 
-export function getRoot(leafNo: number): string {
+export function getRoot(leafNo: number): { leaves: string [], tree: MiniMerkleTree} {
     const coder = AbiCoder.defaultAbiCoder()
     let leafs = [];
     for (let i = 0; i < leafNo; i++) {
@@ -15,5 +15,5 @@ export function getRoot(leafNo: number): string {
     })
 
     const tree = new MiniMerkleTree(leaves)
-    return tree.root
+    return { leaves, tree }
 }
