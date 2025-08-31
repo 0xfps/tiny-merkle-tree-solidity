@@ -31,9 +31,13 @@ describe("Test root", function () {
                 console.log("Added leaf", i)
                 await tmt.addLeaf(i.toString())
                 const root = await tmt.root()
-                const jsRoot = getRoot(i + 1)
-
+                const { tree, leaves } = getRoot(i + 1)
+                const jsRoot = tree.root
+                
+                const proof = tree.generateMerkleProof(leaves[0])
+                const verify = tree.verifyProof(leaves[0], proof)
                 assert(jsRoot == root)
+                assert(verify == true)
             }
 
             console.log("Finished testing for limit", LIMIT)

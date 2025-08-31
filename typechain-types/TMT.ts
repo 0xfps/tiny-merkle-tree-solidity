@@ -8,6 +8,7 @@ import type {
   FunctionFragment,
   Result,
   Interface,
+  EventFragment,
   ContractRunner,
   ContractMethod,
   Listener,
@@ -16,6 +17,7 @@ import type {
   TypedContractEvent,
   TypedDeferredTopicFilter,
   TypedEventLog,
+  TypedLogDescription,
   TypedListener,
   TypedContractMethod,
 } from "./common";
@@ -33,6 +35,8 @@ export interface TMTInterface extends Interface {
       | "root"
       | "rootIndex"
   ): FunctionFragment;
+
+  getEvent(nameOrSignatureOrTopic: "LeafAdded"): EventFragment;
 
   encodeFunctionData(
     functionFragment: "MAX_LEAVES_LENGTH",
@@ -83,6 +87,18 @@ export interface TMTInterface extends Interface {
   decodeFunctionResult(functionFragment: "length", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "root", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "rootIndex", data: BytesLike): Result;
+}
+
+export namespace LeafAddedEvent {
+  export type InputTuple = [leaf: BytesLike];
+  export type OutputTuple = [leaf: string];
+  export interface OutputObject {
+    leaf: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export interface TMT extends BaseContract {
@@ -178,5 +194,24 @@ export interface TMT extends BaseContract {
     nameOrSignature: "rootIndex"
   ): TypedContractMethod<[], [bigint], "view">;
 
-  filters: {};
+  getEvent(
+    key: "LeafAdded"
+  ): TypedContractEvent<
+    LeafAddedEvent.InputTuple,
+    LeafAddedEvent.OutputTuple,
+    LeafAddedEvent.OutputObject
+  >;
+
+  filters: {
+    "LeafAdded(bytes32)": TypedContractEvent<
+      LeafAddedEvent.InputTuple,
+      LeafAddedEvent.OutputTuple,
+      LeafAddedEvent.OutputObject
+    >;
+    LeafAdded: TypedContractEvent<
+      LeafAddedEvent.InputTuple,
+      LeafAddedEvent.OutputTuple,
+      LeafAddedEvent.OutputObject
+    >;
+  };
 }

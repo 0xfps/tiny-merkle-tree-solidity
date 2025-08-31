@@ -10,6 +10,19 @@ import type {
 
 const _abi = [
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "bytes32",
+        name: "leaf",
+        type: "bytes32",
+      },
+    ],
+    name: "LeafAdded",
+    type: "event",
+  },
+  {
     inputs: [],
     name: "MAX_LEAVES_LENGTH",
     outputs: [
