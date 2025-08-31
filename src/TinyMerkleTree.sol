@@ -16,22 +16,25 @@ abstract contract TinyMerkleTree {
      * @notice  This number is used to determine which element to update in the
      *          last32Roots. If the index equals the `STORED_ROOT_LENGTH`, the
      *          rootIndex is reset to 0. This ensures that the contents of the
-     *          last32Roots array are indeed the last 32 roots.
+     *          last32Roots array are always the last 32 roots.
      */
     uint8 public rootIndex;
     bytes32[STORED_ROOT_LENGTH] public last32Roots;
 
+    /// @dev number of leaves on depth 0 (base).
     uint40 public length;
     bytes32 public root;
 
-    // Number of hashes stored on each depth.
+    /// @notice Number of hashes stored on each depth.
     mapping(uint8 depth => uint40 depthLength) public depthLengths;
-    // Last stored hash for each depth.
+    /// @notice Last stored hash for each depth.
     mapping(uint8 depth => bytes32 depthHash) public depthHashes;
 
+    event LeafAdded(bytes32 indexed leaf);
+
     /**
-     * @notice  I expect that for a start, a leaf should be set to
-     *          make a root available.
+     * @notice  I set a leaf at the start to kick off the tree building.
+     *          Leaf can be any arbitrary thing. 0 for now.
      */
     constructor() {
         bytes32 leaf = bytes32(PoseidonT2.hash([uint256(keccak256(abi.encode("0")))]));
@@ -42,6 +45,8 @@ abstract contract TinyMerkleTree {
         depthHashes[0] = leaf;
     }
 
+    // @note Leaf is a string at the moment, ideally, in development,
+    // leaf should be a bytes32, there will be no need for abi.encode().
     function _addLeaf(string memory _leaf) internal returns (bytes32 _root) {
         // Do not exceed 4,294,967,296 leaves.
         if (length++ == MAX_LEAVES_LENGTH + 1) revert("Tree Full!");
@@ -63,6 +68,8 @@ abstract contract TinyMerkleTree {
         _root = currentHash;
         _storeRoot(_root);
         root = _root;
+
+        emit LeafAdded(leaf);
     }
 
     function _getHashForDepth(uint40 len, uint8 depth, bytes32 leaf) internal returns (bytes32 hash) {
