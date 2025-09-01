@@ -46,7 +46,7 @@ export interface TMTInterface extends Interface {
     functionFragment: "STORED_ROOT_LENGTH",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "addLeaf", values: [string]): string;
+  encodeFunctionData(functionFragment: "addLeaf", values: [BytesLike]): string;
   encodeFunctionData(
     functionFragment: "depthHashes",
     values: [BigNumberish]
@@ -148,7 +148,7 @@ export interface TMT extends BaseContract {
 
   STORED_ROOT_LENGTH: TypedContractMethod<[], [bigint], "view">;
 
-  addLeaf: TypedContractMethod<[s: string], [void], "nonpayable">;
+  addLeaf: TypedContractMethod<[s: BytesLike], [void], "nonpayable">;
 
   depthHashes: TypedContractMethod<[depth: BigNumberish], [string], "view">;
 
@@ -174,7 +174,7 @@ export interface TMT extends BaseContract {
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "addLeaf"
-  ): TypedContractMethod<[s: string], [void], "nonpayable">;
+  ): TypedContractMethod<[s: BytesLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "depthHashes"
   ): TypedContractMethod<[depth: BigNumberish], [string], "view">;
