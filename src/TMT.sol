@@ -4,7 +4,10 @@ pragma solidity ^0.8.23;
 import { TinyMerkleTree } from "./TinyMerkleTree.sol";
 
 contract TMT is TinyMerkleTree {
-    function addLeaf(string memory s) public {
+
+    constructor(bytes32 initLeaf) TinyMerkleTree(initLeaf){}
+    
+    function addLeaf(bytes32 s) public {
         _addLeaf(s);
     }
 }

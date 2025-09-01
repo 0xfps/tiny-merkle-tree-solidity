@@ -36,8 +36,8 @@ abstract contract TinyMerkleTree {
      * @notice  I set a leaf at the start to kick off the tree building.
      *          Leaf can be any arbitrary thing. 0 for now.
      */
-    constructor() {
-        bytes32 leaf = bytes32(PoseidonT2.hash([uint256(keccak256(abi.encode("0")))]));
+    constructor(bytes32 initLeaf) {
+        bytes32 leaf = initLeaf;
         root = bytes32(PoseidonT2.hash([uint256(keccak256(abi.encodePacked(leaf)))]));
 
         length = 1;
@@ -47,11 +47,13 @@ abstract contract TinyMerkleTree {
 
     // @note Leaf is a string at the moment, ideally, in development,
     // leaf should be a bytes32, there will be no need for abi.encode().
-    function _addLeaf(string memory _leaf) internal returns (bytes32 _root) {
+    // Also, no need for Poseidon hash, all will be handled before this
+    // function is called with the output of the hash.
+    // Ideally, a user passes an 84 byte deposit key, the key is hashed,
+    // then reduced to a valid field bytes32.
+    function _addLeaf(bytes32 leaf) internal returns (bytes32 _root) {
         // Do not exceed 4,294,967,296 leaves.
         if (length++ == MAX_LEAVES_LENGTH + 1) revert("Tree Full!");
-
-        bytes32 leaf = bytes32(PoseidonT2.hash([uint256(keccak256(abi.encode(_leaf)))]));
 
         depthLengths[0] = length;
 

@@ -1,5 +1,5 @@
 import { ethers } from "hardhat";
-import { getRoot } from "./mock-merkle-tree";
+import { getEquivLeaf, getRoot } from "./mock-merkle-tree";
 import assert from "node:assert/strict"
 
 // Quite a stress test, but no issues.
@@ -23,15 +23,17 @@ describe("Test root", function () {
                     PoseidonT3: p3a
                 }
             })
-            const tmt = await TMT.deploy()
+            const initLeaf = getEquivLeaf(0)
+            const tmt = await TMT.deploy(initLeaf)
 
             console.log("Testing for limit", LIMIT)
 
             for (let i = 1; i < LIMIT + 1; i++) {
                 console.log("Added leaf", i)
-                await tmt.addLeaf(i.toString())
+                await tmt.addLeaf(getEquivLeaf(i))
                 const root = await tmt.root()
                 const { tree, leaves } = getRoot(i + 1)
+                console.log(leaves)
                 const jsRoot = tree.root
                 
                 const proof = tree.generateMerkleProof(leaves[0])

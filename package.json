@@ -25,7 +25,7 @@
     "typescript": "^5.9.2"
   },
   "dependencies": {
-    "@fifteenfigures/mini-merkle-tree": "^0.0.11",
+    "@fifteenfigures/mini-merkle-tree": "^0.0.17",
     "keccak256": "^1.0.6",
     "poseidon-hash": "^1.0.1"
   }
