@@ -5,7 +5,7 @@ import { PoseidonT2, PoseidonT3 } from "./lib/PoseidonHash.sol";
 
 /**
  * @title   TinyMerkleTree.
- * @author  fps (@0xfps).
+ * @author  fifteenfigures (@fifteenfigures).
  * @dev     A small, simple MerkleTree peripheral contract.
  */
 abstract contract TinyMerkleTree {
@@ -14,9 +14,9 @@ abstract contract TinyMerkleTree {
 
     /**
      * @notice  This number is used to determine which element to update in the
-     *          last32Roots. If the index equals the `STORED_ROOT_LENGTH`, the
-     *          rootIndex is reset to 0. This ensures that the contents of the
-     *          last32Roots array are always the last 32 roots.
+     *          last32Roots. If the rootIndex equals the `STORED_ROOT_LENGTH`,
+     *          the rootIndex is reset to 0. This ensures that the contents of
+     *          the last32Roots array are always the last 32 roots.
      */
     uint8 public rootIndex;
     bytes32[STORED_ROOT_LENGTH] public last32Roots;
@@ -25,32 +25,41 @@ abstract contract TinyMerkleTree {
     uint40 public length;
     bytes32 public root;
 
-    /// @notice Number of hashes stored on each depth.
+    /// @notice Number of hashes (leaves) stored on each depth.
+    ///         Depth 0 is the base of the tree.
     mapping(uint8 depth => uint40 depthLength) public depthLengths;
     /// @notice Last stored hash for each depth.
     mapping(uint8 depth => bytes32 depthHash) public depthHashes;
 
-    event LeafAdded(bytes32 indexed leaf);
-
     /**
-     * @notice  I set a leaf at the start to kick off the tree building.
-     *          Leaf can be any arbitrary thing. 0 for now.
+     * @notice  Set a leaf at the start to kick off the tree building.
      */
     constructor(bytes32 initLeaf) {
         bytes32 leaf = initLeaf;
-        root = bytes32(PoseidonT2.hash([uint256(keccak256(abi.encodePacked(leaf)))]));
+        root = bytes32(PoseidonT2.hash([uint256(leaf)]));
 
         length = 1;
         depthLengths[0] = 1;
         depthHashes[0] = leaf;
     }
 
-    // @note Leaf is a string at the moment, ideally, in development,
-    // leaf should be a bytes32, there will be no need for abi.encode().
-    // Also, no need for Poseidon hash, all will be handled before this
-    // function is called with the output of the hash.
-    // Ideally, a user passes an 84 byte deposit key, the key is hashed,
-    // then reduced to a valid field bytes32.
+    /**
+     * @notice  Adds a leaf to the tree, and simultaneously computes a new
+     *          root from the ground up, using Poseidon hash. Leaf can be
+     *          any bytes32. It SHOULD be the Poseidon equivalent of the
+     *          keccak256 hash of the deposit key. Each leaf is added at 
+     *          the last slot of each depth and recomputed upwards, if the
+     *          depth below the upper depth is twice the length of the upper
+     *          depth, the current leaf is stored at that depth. It is always
+     *          recalculated from 0 to highest depth.
+     *          
+     *          Previous hashes aren't taken into consideration unless it is a
+     *          sibling of the current hash. In that case, it's updated and
+     *          used for the next computation.
+     *
+     *          I expect there to be only 32 iterations from depth 0 to last 
+     *          root on a full tree. Length is halved until it gets to 2.
+     */
     function _addLeaf(bytes32 leaf) internal returns (bytes32 _root) {
         // Do not exceed 4,294,967,296 leaves.
         if (length++ == MAX_LEAVES_LENGTH + 1) revert("Tree Full!");
@@ -70,8 +79,6 @@ abstract contract TinyMerkleTree {
         _root = currentHash;
         _storeRoot(_root);
         root = _root;
-
-        emit LeafAdded(leaf);
     }
 
     function _getHashForDepth(uint40 len, uint8 depth, bytes32 leaf) internal returns (bytes32 hash) {
@@ -90,6 +97,13 @@ abstract contract TinyMerkleTree {
             if (depthLengths[depth + 1] == 0) depthLengths[depth + 1]++;
         } else {
             if (len % 2 == 1)
+                // Return right most leaf if it has no stored sibling, i.e depth is odd.
+                // Leaves are not stored if their current depth is odd except for the base
+                // depth (0).
+                // Recursively, leaves are not also stored if their addition to the current
+                // depth isn't half the length of the previous depth.
+                // This is because, only stored leaves will be a result of the last two
+                // siblings of the depth before it.
                 hash = leaf;
             else {
                 (hashLeft, hashRight) = _sortHashes(depthHashes[depth], leaf);
@@ -109,7 +123,7 @@ abstract contract TinyMerkleTree {
                 depthLengths[depth]++;
                 // Append latest leaf if this is last stage to root because leaf yielded root.
                 // If not, append the last hash.
-                // Note must be taken that, for lengths % 2 != 0, the hash is == the leaf (L54).
+                // Note must be taken that, for lengths % 2 != 0, the hash is == the leaf (L73).
                 depthHashes[depth] = len == 2 ? leaf : hash;
             }
         }
@@ -119,7 +133,7 @@ abstract contract TinyMerkleTree {
         return hashLeft < hashRight ? (hashLeft, hashRight) : (hashRight, hashLeft);
     }
 
-    function _storeRoot(bytes32 _root) internal {
+    function _storeRoot(bytes32 _root) private {
         if (rootIndex == STORED_ROOT_LENGTH) rootIndex = 0;
         last32Roots[rootIndex] = _root;
         rootIndex++;

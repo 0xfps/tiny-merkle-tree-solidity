@@ -32,12 +32,13 @@ describe("Test root", function () {
                 console.log("Added leaf", i)
                 await tmt.addLeaf(getEquivLeaf(i))
                 const root = await tmt.root()
+                
                 const { tree, leaves } = getRoot(i + 1)
-                console.log(leaves)
                 const jsRoot = tree.root
                 
                 const proof = tree.generateMerkleProof(leaves[0])
                 const verify = tree.verifyProof(leaves[0], proof)
+
                 assert(jsRoot == root)
                 assert(verify == true)
             }

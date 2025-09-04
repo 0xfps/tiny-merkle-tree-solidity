@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.7.0;
 
+/**
+ * @title   Poseidon hash function implemented in Solidity.
+ * @author  Chance <https://github.com/chancehudson>
+ * @notice  Pulled from https://github.com/chancehudson/poseidon-solidity
+ */
+
 library PoseidonT2 {
   uint constant M00 = 0x066f6f85d6f68a85ec10345351a23a3aaf07f38af8c952a7bceca70bd2af7ad5;
   uint constant M01 = 0x0cc57cdbb08507d62bf67a4493cc262fb6c09d557013fff1f573f431221f8ff9;
