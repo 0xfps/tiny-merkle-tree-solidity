@@ -123,7 +123,7 @@ abstract contract TinyMerkleTree {
                 depthLengths[depth]++;
                 // Append latest leaf if this is last stage to root because leaf yielded root.
                 // If not, append the last hash.
-                // Note must be taken that, for lengths % 2 != 0, the hash is == the leaf (L73).
+                // Note must be taken that, for lengths % 2 != 0, the hash is == the leaf (L71, L107).
                 depthHashes[depth] = len == 2 ? leaf : hash;
             }
         }
