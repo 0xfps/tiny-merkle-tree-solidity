@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/fps/Desktop/sol-merkle-tree/src/TinyMerkleTree.sol": {
-      "lastModificationDate": 1757016672558,
-      "contentHash": "6f1fda6a1144b0c792998f034093aab9",
+      "lastModificationDate": 1757016994315,
+      "contentHash": "5257979f5ad0f8248095a357488692a1",
       "sourceName": "src/TinyMerkleTree.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -78,8 +78,8 @@
       ]
     },
     "/Users/fps/Desktop/sol-merkle-tree/src/lib/PoseidonHash.sol": {
-      "lastModificationDate": 1757015179171,
-      "contentHash": "5388adb455f4a5ac511759bcd3cad4da",
+      "lastModificationDate": 1757016867921,
+      "contentHash": "5ae2e9c8dd4616eb4e9148e0c6477503",
       "sourceName": "src/lib/PoseidonHash.sol",
       "solcConfig": {
         "version": "0.8.28",
