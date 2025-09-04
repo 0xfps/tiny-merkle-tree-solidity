@@ -3,8 +3,8 @@ pragma solidity >=0.7.0;
 
 /**
  * @title   Poseidon hash function implemented in Solidity.
- * @author  Chance <https://github.com/chancehudson>
- * @notice  Pulled from https://github.com/chancehudson/poseidon-solidity
+ * @author  Chance <https://github.com/chancehudson>.
+ * @notice  Pulled from https://github.com/chancehudson/poseidon-solidity.
  */
 
 library PoseidonT2 {
