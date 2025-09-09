@@ -81,7 +81,7 @@ abstract contract TinyMerkleTree {
         root = _root;
     }
 
-    function _getHashForDepth(uint40 len, uint8 depth, bytes32 leaf) internal returns (bytes32 hash) {
+    function _getHashForDepth(uint40 len, uint8 depth, bytes32 leaf) private returns (bytes32 hash) {
         bytes32 hashLeft;
         bytes32 hashRight;
 
