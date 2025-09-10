@@ -21,65 +21,19 @@ import type {
 } from "./common";
 
 export interface TinyMerkleTreeInterface extends Interface {
-  getFunction(
-    nameOrSignature:
-      | "MAX_LEAVES_LENGTH"
-      | "STORED_ROOT_LENGTH"
-      | "depthHashes"
-      | "depthLengths"
-      | "last32Roots"
-      | "length"
-      | "root"
-      | "rootIndex"
-  ): FunctionFragment;
+  getFunction(nameOrSignature: "last32Roots" | "root"): FunctionFragment;
 
-  encodeFunctionData(
-    functionFragment: "MAX_LEAVES_LENGTH",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "STORED_ROOT_LENGTH",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "depthHashes",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "depthLengths",
-    values: [BigNumberish]
-  ): string;
   encodeFunctionData(
     functionFragment: "last32Roots",
     values: [BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "length", values?: undefined): string;
   encodeFunctionData(functionFragment: "root", values?: undefined): string;
-  encodeFunctionData(functionFragment: "rootIndex", values?: undefined): string;
 
-  decodeFunctionResult(
-    functionFragment: "MAX_LEAVES_LENGTH",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "STORED_ROOT_LENGTH",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "depthHashes",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "depthLengths",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "last32Roots",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "length", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "root", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "rootIndex", data: BytesLike): Result;
 }
 
 export interface TinyMerkleTree extends BaseContract {
@@ -125,50 +79,20 @@ export interface TinyMerkleTree extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  MAX_LEAVES_LENGTH: TypedContractMethod<[], [bigint], "view">;
-
-  STORED_ROOT_LENGTH: TypedContractMethod<[], [bigint], "view">;
-
-  depthHashes: TypedContractMethod<[depth: BigNumberish], [string], "view">;
-
-  depthLengths: TypedContractMethod<[depth: BigNumberish], [bigint], "view">;
-
   last32Roots: TypedContractMethod<[arg0: BigNumberish], [string], "view">;
 
-  length: TypedContractMethod<[], [bigint], "view">;
-
   root: TypedContractMethod<[], [string], "view">;
-
-  rootIndex: TypedContractMethod<[], [bigint], "view">;
 
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
 
   getFunction(
-    nameOrSignature: "MAX_LEAVES_LENGTH"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "STORED_ROOT_LENGTH"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "depthHashes"
-  ): TypedContractMethod<[depth: BigNumberish], [string], "view">;
-  getFunction(
-    nameOrSignature: "depthLengths"
-  ): TypedContractMethod<[depth: BigNumberish], [bigint], "view">;
-  getFunction(
     nameOrSignature: "last32Roots"
   ): TypedContractMethod<[arg0: BigNumberish], [string], "view">;
   getFunction(
-    nameOrSignature: "length"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
     nameOrSignature: "root"
   ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "rootIndex"
-  ): TypedContractMethod<[], [bigint], "view">;
 
   filters: {};
 }

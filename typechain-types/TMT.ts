@@ -24,69 +24,24 @@ import type {
 
 export interface TMTInterface extends Interface {
   getFunction(
-    nameOrSignature:
-      | "MAX_LEAVES_LENGTH"
-      | "STORED_ROOT_LENGTH"
-      | "addLeaf"
-      | "depthHashes"
-      | "depthLengths"
-      | "last32Roots"
-      | "length"
-      | "root"
-      | "rootIndex"
+    nameOrSignature: "addLeaf" | "last32Roots" | "root"
   ): FunctionFragment;
 
   getEvent(nameOrSignatureOrTopic: "LeafAdded"): EventFragment;
 
-  encodeFunctionData(
-    functionFragment: "MAX_LEAVES_LENGTH",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "STORED_ROOT_LENGTH",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "addLeaf", values: [BytesLike]): string;
   encodeFunctionData(
-    functionFragment: "depthHashes",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "depthLengths",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "last32Roots",
     values: [BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "length", values?: undefined): string;
   encodeFunctionData(functionFragment: "root", values?: undefined): string;
-  encodeFunctionData(functionFragment: "rootIndex", values?: undefined): string;
 
-  decodeFunctionResult(
-    functionFragment: "MAX_LEAVES_LENGTH",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "STORED_ROOT_LENGTH",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "addLeaf", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "depthHashes",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "depthLengths",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "last32Roots",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "length", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "root", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "rootIndex", data: BytesLike): Result;
 }
 
 export namespace LeafAddedEvent {
@@ -144,55 +99,25 @@ export interface TMT extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  MAX_LEAVES_LENGTH: TypedContractMethod<[], [bigint], "view">;
-
-  STORED_ROOT_LENGTH: TypedContractMethod<[], [bigint], "view">;
-
   addLeaf: TypedContractMethod<[s: BytesLike], [void], "nonpayable">;
-
-  depthHashes: TypedContractMethod<[depth: BigNumberish], [string], "view">;
-
-  depthLengths: TypedContractMethod<[depth: BigNumberish], [bigint], "view">;
 
   last32Roots: TypedContractMethod<[arg0: BigNumberish], [string], "view">;
 
-  length: TypedContractMethod<[], [bigint], "view">;
-
   root: TypedContractMethod<[], [string], "view">;
-
-  rootIndex: TypedContractMethod<[], [bigint], "view">;
 
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
 
   getFunction(
-    nameOrSignature: "MAX_LEAVES_LENGTH"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "STORED_ROOT_LENGTH"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
     nameOrSignature: "addLeaf"
   ): TypedContractMethod<[s: BytesLike], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "depthHashes"
-  ): TypedContractMethod<[depth: BigNumberish], [string], "view">;
-  getFunction(
-    nameOrSignature: "depthLengths"
-  ): TypedContractMethod<[depth: BigNumberish], [bigint], "view">;
   getFunction(
     nameOrSignature: "last32Roots"
   ): TypedContractMethod<[arg0: BigNumberish], [string], "view">;
   getFunction(
-    nameOrSignature: "length"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
     nameOrSignature: "root"
   ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "rootIndex"
-  ): TypedContractMethod<[], [bigint], "view">;
 
   getEvent(
     key: "LeafAdded"
