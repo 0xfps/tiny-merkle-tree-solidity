@@ -9,8 +9,8 @@ import { PoseidonT2, PoseidonT3 } from "./lib/PoseidonHash.sol";
  * @dev     A small, simple MerkleTree peripheral contract.
  */
 abstract contract TinyMerkleTree {
-    uint40 public immutable MAX_LEAVES_LENGTH = 2 ** 32;
-    uint8 public constant STORED_ROOT_LENGTH = 32;
+    uint40 internal immutable MAX_LEAVES_LENGTH = 2 ** 32;
+    uint8 internal constant STORED_ROOT_LENGTH = 32;
 
     /**
      * @notice  This number is used to determine which element to update in the
@@ -18,18 +18,18 @@ abstract contract TinyMerkleTree {
      *          the rootIndex is reset to 0. This ensures that the contents of
      *          the last32Roots array are always the last 32 roots.
      */
-    uint8 public rootIndex;
+    uint8 internal rootIndex;
     bytes32[STORED_ROOT_LENGTH] public last32Roots;
 
     /// @dev number of leaves on depth 0 (base).
-    uint40 public length;
+    uint40 internal length;
     bytes32 public root;
 
     /// @notice Number of hashes (leaves) stored on each depth.
     ///         Depth 0 is the base of the tree.
-    mapping(uint8 depth => uint40 depthLength) public depthLengths;
+    mapping(uint8 depth => uint40 depthLength) internal depthLengths;
     /// @notice Last stored hash for each depth.
-    mapping(uint8 depth => bytes32 depthHash) public depthHashes;
+    mapping(uint8 depth => bytes32 depthHash) internal depthHashes;
 
     /**
      * @notice  Set a leaf at the start to kick off the tree building.
