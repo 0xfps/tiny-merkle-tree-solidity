@@ -19,7 +19,7 @@ abstract contract TinyMerkleTree {
      *          the last32Roots array are always the last 32 roots.
      */
     uint8 internal rootIndex;
-    bytes32[STORED_ROOT_LENGTH] private last32Roots;
+    bytes32[STORED_ROOT_LENGTH] internal last32Roots;
 
     /// @dev number of leaves on depth 0 (base).
     uint40 internal length;
