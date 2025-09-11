@@ -43,7 +43,7 @@ abstract contract TinyMerkleTree {
         depthHashes[0] = leaf;
     }
 
-    function rootHistory() public view returns (bytes32[STORED_ROOT_LENGTH] memory) {
+    function getLast32Roots() public view returns (bytes32[STORED_ROOT_LENGTH] memory) {
         return last32Roots;
     }
 
