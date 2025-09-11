@@ -19,7 +19,7 @@ abstract contract TinyMerkleTree {
      *          the last32Roots array are always the last 32 roots.
      */
     uint8 internal rootIndex;
-    bytes32[STORED_ROOT_LENGTH] public last32Roots;
+    bytes32[STORED_ROOT_LENGTH] private last32Roots;
 
     /// @dev number of leaves on depth 0 (base).
     uint40 internal length;
@@ -41,6 +41,10 @@ abstract contract TinyMerkleTree {
         length = 1;
         depthLengths[0] = 1;
         depthHashes[0] = leaf;
+    }
+
+    function getLast32Roots() public view returns (bytes32[STORED_ROOT_LENGTH] memory) {
+        return last32Roots;
     }
 
     /**
