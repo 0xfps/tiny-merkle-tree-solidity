@@ -3,7 +3,6 @@
 /* eslint-disable */
 import type {
   BaseContract,
-  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
@@ -21,18 +20,10 @@ import type {
 } from "./common";
 
 export interface TinyMerkleTreeInterface extends Interface {
-  getFunction(nameOrSignature: "last32Roots" | "root"): FunctionFragment;
+  getFunction(nameOrSignature: "root"): FunctionFragment;
 
-  encodeFunctionData(
-    functionFragment: "last32Roots",
-    values: [BigNumberish]
-  ): string;
   encodeFunctionData(functionFragment: "root", values?: undefined): string;
 
-  decodeFunctionResult(
-    functionFragment: "last32Roots",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "root", data: BytesLike): Result;
 }
 
@@ -79,17 +70,12 @@ export interface TinyMerkleTree extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  last32Roots: TypedContractMethod<[arg0: BigNumberish], [string], "view">;
-
   root: TypedContractMethod<[], [string], "view">;
 
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
 
-  getFunction(
-    nameOrSignature: "last32Roots"
-  ): TypedContractMethod<[arg0: BigNumberish], [string], "view">;
   getFunction(
     nameOrSignature: "root"
   ): TypedContractMethod<[], [string], "view">;

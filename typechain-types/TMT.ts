@@ -3,7 +3,6 @@
 /* eslint-disable */
 import type {
   BaseContract,
-  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
@@ -23,24 +22,14 @@ import type {
 } from "./common";
 
 export interface TMTInterface extends Interface {
-  getFunction(
-    nameOrSignature: "addLeaf" | "last32Roots" | "root"
-  ): FunctionFragment;
+  getFunction(nameOrSignature: "addLeaf" | "root"): FunctionFragment;
 
   getEvent(nameOrSignatureOrTopic: "LeafAdded"): EventFragment;
 
   encodeFunctionData(functionFragment: "addLeaf", values: [BytesLike]): string;
-  encodeFunctionData(
-    functionFragment: "last32Roots",
-    values: [BigNumberish]
-  ): string;
   encodeFunctionData(functionFragment: "root", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "addLeaf", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "last32Roots",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "root", data: BytesLike): Result;
 }
 
@@ -101,8 +90,6 @@ export interface TMT extends BaseContract {
 
   addLeaf: TypedContractMethod<[s: BytesLike], [void], "nonpayable">;
 
-  last32Roots: TypedContractMethod<[arg0: BigNumberish], [string], "view">;
-
   root: TypedContractMethod<[], [string], "view">;
 
   getFunction<T extends ContractMethod = ContractMethod>(
@@ -112,9 +99,6 @@ export interface TMT extends BaseContract {
   getFunction(
     nameOrSignature: "addLeaf"
   ): TypedContractMethod<[s: BytesLike], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "last32Roots"
-  ): TypedContractMethod<[arg0: BigNumberish], [string], "view">;
   getFunction(
     nameOrSignature: "root"
   ): TypedContractMethod<[], [string], "view">;
