@@ -22,24 +22,14 @@ import type {
 } from "./common";
 
 export interface TMTInterface extends Interface {
-  getFunction(
-    nameOrSignature: "addLeaf" | "getLast32Roots" | "root"
-  ): FunctionFragment;
+  getFunction(nameOrSignature: "addLeaf" | "root"): FunctionFragment;
 
   getEvent(nameOrSignatureOrTopic: "LeafAdded"): EventFragment;
 
   encodeFunctionData(functionFragment: "addLeaf", values: [BytesLike]): string;
-  encodeFunctionData(
-    functionFragment: "getLast32Roots",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "root", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "addLeaf", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "getLast32Roots",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "root", data: BytesLike): Result;
 }
 
@@ -100,8 +90,6 @@ export interface TMT extends BaseContract {
 
   addLeaf: TypedContractMethod<[s: BytesLike], [void], "nonpayable">;
 
-  getLast32Roots: TypedContractMethod<[], [string[]], "view">;
-
   root: TypedContractMethod<[], [string], "view">;
 
   getFunction<T extends ContractMethod = ContractMethod>(
@@ -111,9 +99,6 @@ export interface TMT extends BaseContract {
   getFunction(
     nameOrSignature: "addLeaf"
   ): TypedContractMethod<[s: BytesLike], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "getLast32Roots"
-  ): TypedContractMethod<[], [string[]], "view">;
   getFunction(
     nameOrSignature: "root"
   ): TypedContractMethod<[], [string], "view">;
