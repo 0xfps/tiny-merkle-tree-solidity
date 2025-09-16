@@ -43,6 +43,10 @@ abstract contract TinyMerkleTree {
         depthHashes[0] = leaf;
     }
 
+    function getLast32Roots() public view returns (bytes32[STORED_ROOT_LENGTH] memory) {
+        return last32Roots;
+    }
+
     /**
      * @notice  Adds a leaf to the tree, and simultaneously computes a new
      *          root from the ground up, using Poseidon hash. Leaf can be
