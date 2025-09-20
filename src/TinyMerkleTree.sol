@@ -16,7 +16,7 @@ abstract contract TinyMerkleTree {
      * @notice  This number is used to determine which element to update in the
      *          last64Roots. If the rootIndex equals the `STORED_ROOT_LENGTH`,
      *          the rootIndex is reset to 0. This ensures that the contents of
-     *          the last64Roots array are always the last 32 roots.
+     *          the last64Roots array are always the last 64 roots.
      */
     uint8 internal rootIndex;
     bytes32[STORED_ROOT_LENGTH] internal last64Roots;

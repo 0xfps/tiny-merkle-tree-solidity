@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/fps/Desktop/sol-merkle-tree/src/TinyMerkleTree.sol": {
-      "lastModificationDate": 1758353325055,
-      "contentHash": "b176b6fcadfb92d698d9d1ffc5aa1f59",
+      "lastModificationDate": 1758353460005,
+      "contentHash": "49816ea1c1766583ac3aeb826c0e62a1",
       "sourceName": "src/TinyMerkleTree.sol",
       "solcConfig": {
         "version": "0.8.28",
