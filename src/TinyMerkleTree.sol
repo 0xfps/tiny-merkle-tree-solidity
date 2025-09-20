@@ -10,16 +10,16 @@ import { PoseidonT2, PoseidonT3 } from "./lib/PoseidonHash.sol";
  */
 abstract contract TinyMerkleTree {
     uint40 internal immutable MAX_LEAVES_LENGTH = 2 ** 32;
-    uint8 internal constant STORED_ROOT_LENGTH = 32;
+    uint8 internal constant STORED_ROOT_LENGTH = 64;
 
     /**
      * @notice  This number is used to determine which element to update in the
-     *          last32Roots. If the rootIndex equals the `STORED_ROOT_LENGTH`,
+     *          last64Roots. If the rootIndex equals the `STORED_ROOT_LENGTH`,
      *          the rootIndex is reset to 0. This ensures that the contents of
-     *          the last32Roots array are always the last 32 roots.
+     *          the last64Roots array are always the last 32 roots.
      */
     uint8 internal rootIndex;
-    bytes32[STORED_ROOT_LENGTH] internal last32Roots;
+    bytes32[STORED_ROOT_LENGTH] internal last64Roots;
 
     /// @dev number of leaves on depth 0 (base).
     uint40 internal length;
@@ -43,8 +43,8 @@ abstract contract TinyMerkleTree {
         depthHashes[0] = leaf;
     }
 
-    function getLast32Roots() public view returns (bytes32[STORED_ROOT_LENGTH] memory) {
-        return last32Roots;
+    function getLast64Roots() public view returns (bytes32[STORED_ROOT_LENGTH] memory) {
+        return last64Roots;
     }
 
     /**
@@ -139,7 +139,7 @@ abstract contract TinyMerkleTree {
 
     function _storeRoot(bytes32 _root) private {
         if (rootIndex == STORED_ROOT_LENGTH) rootIndex = 0;
-        last32Roots[rootIndex] = _root;
+        last64Roots[rootIndex] = _root;
         rootIndex++;
     }
 }
