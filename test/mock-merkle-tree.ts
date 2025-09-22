@@ -1,9 +1,9 @@
-import MiniMerkleTree, { standardizeToPoseidon } from "@fifteenfigures/mini-merkle-tree";
+import TinyMerkleTree, { standardizeToPoseidon } from "@fifteenfigures/tiny-merkle-tree";
 import { AbiCoder } from "ethers";
 
 const coder = AbiCoder.defaultAbiCoder()
 
-export function getRoot(leafNo: number): { leaves: string [], tree: MiniMerkleTree} {
+export function getRoot(leafNo: number): { leaves: string [], tree: TinyMerkleTree} {
     let leafs = [];
     for (let i = 0; i < leafNo; i++) {
         leafs.push(i)
@@ -13,7 +13,7 @@ export function getRoot(leafNo: number): { leaves: string [], tree: MiniMerkleTr
         return getEquivLeaf(leaf)
     })
     
-    const tree = new MiniMerkleTree(leaves)
+    const tree = new TinyMerkleTree(leaves)
     return { leaves, tree }
 }
 
