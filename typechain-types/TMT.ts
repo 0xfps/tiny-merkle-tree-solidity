@@ -23,7 +23,7 @@ import type {
 
 export interface TMTInterface extends Interface {
   getFunction(
-    nameOrSignature: "addLeaf" | "getLast64Roots" | "root"
+    nameOrSignature: "addLeaf" | "getLast64Roots" | "length" | "root"
   ): FunctionFragment;
 
   getEvent(nameOrSignatureOrTopic: "LeafAdded"): EventFragment;
@@ -33,6 +33,7 @@ export interface TMTInterface extends Interface {
     functionFragment: "getLast64Roots",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "length", values?: undefined): string;
   encodeFunctionData(functionFragment: "root", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "addLeaf", data: BytesLike): Result;
@@ -40,6 +41,7 @@ export interface TMTInterface extends Interface {
     functionFragment: "getLast64Roots",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "length", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "root", data: BytesLike): Result;
 }
 
@@ -102,6 +104,8 @@ export interface TMT extends BaseContract {
 
   getLast64Roots: TypedContractMethod<[], [string[]], "view">;
 
+  length: TypedContractMethod<[], [bigint], "view">;
+
   root: TypedContractMethod<[], [string], "view">;
 
   getFunction<T extends ContractMethod = ContractMethod>(
@@ -114,6 +118,9 @@ export interface TMT extends BaseContract {
   getFunction(
     nameOrSignature: "getLast64Roots"
   ): TypedContractMethod<[], [string[]], "view">;
+  getFunction(
+    nameOrSignature: "length"
+  ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "root"
   ): TypedContractMethod<[], [string], "view">;

@@ -22,7 +22,7 @@ abstract contract TinyMerkleTree {
     bytes32[STORED_ROOT_LENGTH] internal last64Roots;
 
     /// @dev number of leaves on depth 0 (base).
-    uint40 internal length;
+    uint40 public length;
     bytes32 public root;
 
     /// @notice Number of hashes (leaves) stored on each depth.
