@@ -59,7 +59,7 @@ At most **one operation per depth** is performed.
 ## Complexity Guarantees
 | Operation      | Complexity   |
 | -------------- | ------------ |
-| Insert leaf    | ``O(log N)``   |
+| Insert leaf    | `O(log N)`.  |
 | Storage growth | `O(depth)`   |
 | Root retrieval | `O(1)`       |
 
