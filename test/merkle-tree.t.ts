@@ -24,7 +24,7 @@ describe("Test root", function () {
                 }
             })
             const initLeaf = getEquivLeaf(0)
-            const tmt = await TMT.deploy(initLeaf)
+            const tmt = await TMT.deploy(32n, initLeaf)
 
             console.log("Testing for limit", LIMIT)
 

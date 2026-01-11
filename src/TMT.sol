@@ -5,7 +5,7 @@ import { TinyMerkleTree } from "./TinyMerkleTree.sol";
 
 contract TMT is TinyMerkleTree {
     event LeafAdded(bytes32 indexed leaf);
-    constructor(bytes32 initLeaf) TinyMerkleTree(initLeaf){}
+    constructor(uint8 depth, bytes32 initLeaf) TinyMerkleTree(depth, initLeaf){}
     
     function addLeaf(bytes32 s) public {
         _addLeaf(s);
